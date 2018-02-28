@@ -4,23 +4,28 @@
 
 import http.client
 import pprint
+import json
+import requests
 
 def search(start, dest, apikey):
 
-    conn = http.client.HTTPSConnection("public-api.blablacar.com")
+    url = "https://public-api.blablacar.com/api/v2/trips?"
 
     headers = {
         'accept': "application/json",
         'key': apikey
     }
 
+    params = {
+        'fn': start,
+        'tn': dest,
+        'local': "fr_FR",
+        'format': "json"
+    }
+
     print(start, dest)
 
-    conn.request("GET",
-                 "/api/v2/trips?fn={}&tn={}&locale=fr_FR&_format=xml".format(start, dest),
-                 headers=headers)
+    resp = requests.get(url=url, params=params, headers=headers)
 
-    res = conn.getresponse()
-    data = res.read()
+    print(json.dumps(resp.json(), sort_keys=True, indent=4))
 
-    print(data.decode("utf-8"))
