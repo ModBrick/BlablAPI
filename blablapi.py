@@ -4,6 +4,7 @@
 
 import argparse
 import APIblablacarCall
+import json
 
 
 class tripclass:
@@ -21,15 +22,38 @@ class tripclass:
 class blablApi:
 
     def __init__(self, filetripname, apikey):
-        self.triplist = self.getTrip(filetripname)
+        self.triplist = self.getTripList(filetripname)
         self.apikey = apikey
         print(self.triplist)
 
     def searchTrajet(self):
         for trip in self.triplist:
-            APIblablacarCall.search(trip.Sstart, trip.Sdest, self.apikey)
+            jsonsearch = APIblablacarCall.search(trip.Sstart, trip.Sdest, 1, self.apikey)
+            if jsonsearch['pager']['pages'] > 1:
+                self.pageToPage(trip, jsonsearch)
+            else:
+                self.getTripId(jsonsearch)
 
-    def getTrip(self, filetripname):
+    def getTripId(self, json):
+        trips = json['trips']
+        #APIblablacarCall.jsonPrint(trip)
+        for trip in trips:
+            APIblablacarCall.jsonPrint(trip)
+            print('============================================================================================')
+
+    def pageToPage(self, trip, jsonsearch):
+            while int(jsonsearch['pager']['page']) < int(jsonsearch['pager']['pages']):
+                print("{}/{}".format(jsonsearch['pager']['page'], jsonsearch['pager']['pages']))
+                self.getTripId(jsonsearch)
+                page = jsonsearch['pager']['page']
+                page += 1
+                jsonsearch = APIblablacarCall.search(trip.Sstart, trip.Sdest, page, self.apikey)
+
+
+    def getTripInfo(self, jsontrip):
+        """TODO"""
+
+    def getTripList(self, filetripname):
         triplist = []
         filetrip = open(filetripname, "r")
         trips = filetrip.read().splitlines()
