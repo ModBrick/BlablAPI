@@ -32,6 +32,7 @@ class blablApi:
     def searchTrajet(self):
         for trip in self.triplist:
             jsonsearch = APIblablacarCall.search(trip.Sstart, trip.Sdest, 1, self.apikey)
+            APIblablacarCall.jsonPrint(jsonsearch)
             if jsonsearch['pager']['pages'] > 1:
                 self.pageToPage(trip, jsonsearch)
             else:
@@ -39,13 +40,11 @@ class blablApi:
 
     def getTripId(self, json):
         trips = json['trips']
-        #APIblablacarCall.jsonPrint(trip)
         for trip in trips:
-            #APIblablacarCall.jsonPrint(trip)
-            #TODO: WRITE HERE INFO TRIP
-            print(trip['permanent_id'])
+            APIblablacarCall.jsonPrint(trip)
             id = trip['permanent_id']
-            APIblablacarCall.getInfo(id, self.apikey)
+            jsontrip = APIblablacarCall.getInfo(id, self.apikey)
+            # TODO: WRITE HERE INFO TRIP
             print('============================================================================================')
 
     def pageToPage(self, trip, jsonsearch):

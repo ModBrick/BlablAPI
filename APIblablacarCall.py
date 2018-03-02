@@ -7,6 +7,16 @@ import pprint
 import json
 import requests
 
+def trajetSuggestion(start, dest):
+    url = "https://www.blablacar.fr/publication/suggestions?"
+
+    params = {
+        'from': start,
+        'to': dest
+    }
+
+    resp = requests.get(url=url, params=params)
+    print(resp.json())
 
 
 def search(start, dest, page, apikey):
@@ -55,5 +65,4 @@ def getInfo(Trip_ID, apikey, locale="fr_FR", format="json"):
     }
 
     resp = requests.get(url=url, params=params, headers=headers)
-    jsonPrint(resp.json())
     return (resp.json())
