@@ -38,5 +38,22 @@ def search(start, dest, page, apikey):
 def jsonPrint(jsonstring):
     print(json.dumps(jsonstring, sort_keys=True, indent=4))
 
-def getInfo():
+def getInfo(Trip_ID, apikey, locale="fr_FR", format="json"):
     """TODO"""
+
+    url = "https://public-api.blablacar.com/api/v2/trips/"
+    url += "{}?".format(Trip_ID)
+
+    headers = {
+        'accept': "application/json",
+        'key': apikey
+    }
+
+    params = {
+        'locale': locale,
+        '_format': format
+    }
+
+    resp = requests.get(url=url, params=params, headers=headers)
+    jsonPrint(resp.json())
+    return (resp.json())

@@ -3,6 +3,9 @@
 #
 
 import argparse
+
+import time
+
 import APIblablacarCall
 import json
 
@@ -38,7 +41,11 @@ class blablApi:
         trips = json['trips']
         #APIblablacarCall.jsonPrint(trip)
         for trip in trips:
-            APIblablacarCall.jsonPrint(trip)
+            #APIblablacarCall.jsonPrint(trip)
+            #TODO: WRITE HERE INFO TRIP
+            print(trip['permanent_id'])
+            id = trip['permanent_id']
+            APIblablacarCall.getInfo(id, self.apikey)
             print('============================================================================================')
 
     def pageToPage(self, trip, jsonsearch):
