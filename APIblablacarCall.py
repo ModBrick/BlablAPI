@@ -16,8 +16,8 @@ def trajetSuggestion(start, dest):
     }
 
     resp = requests.get(url=url, params=params)
-    print(resp.json())
-
+    print(resp.request.url)
+    return resp.json()
 
 def search(start, dest, page, apikey):
     '''Search and return JSON.'''
@@ -65,4 +65,4 @@ def getInfo(Trip_ID, apikey, locale="fr_FR", format="json"):
     }
 
     resp = requests.get(url=url, params=params, headers=headers)
-    return (resp.json())
+    return resp.json()
